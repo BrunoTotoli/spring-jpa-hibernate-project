@@ -1,8 +1,10 @@
 package com.example.course1.config;
 
+import com.example.course1.entities.Category;
 import com.example.course1.entities.Order;
 import com.example.course1.entities.User;
 import com.example.course1.entities.enums.OrderStatus;
+import com.example.course1.repositories.CategoryRepository;
 import com.example.course1.repositories.OrderRepository;
 import com.example.course1.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +25,15 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public void run(String... args) throws Exception {
+
+        Category c1 = new Category(null, "Electronics");
+        Category c2 = new Category(null, "Books");
+        Category c3 = new Category(null, "Computers");
 
         User u1 = new User(null, "jairin", "jairin@gmail.com", "99912939", "1234124");
         User u2 = new User(null, "cleitin", "cleitin@gmail.com", "9129", "1234124");
@@ -34,8 +42,10 @@ public class TestConfig implements CommandLineRunner {
         Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.CANCELED, u2);
         Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.PAID, u1);
 
+
         userRepository.saveAll(Arrays.asList(u1, u2));
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
+        categoryRepository.saveAll(Arrays.asList(c1, c2, c3));
 
     }
 }
