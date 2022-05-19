@@ -1,5 +1,8 @@
 package com.example.course1.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.aspectj.weaver.ast.Or;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -25,6 +28,9 @@ public class Product implements Serializable {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
 
     public Product(Long id, String name, String description, Double price, String imgURL) {
         this.id = id;
@@ -79,6 +85,15 @@ public class Product implements Serializable {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        Set<Order> set = new HashSet<>();
+        for (OrderItem a : items) {
+            set.add(a.getOrder());
+        }
+        return set;
     }
 
     @Override
